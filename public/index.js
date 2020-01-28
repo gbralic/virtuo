@@ -158,6 +158,26 @@ const actors = [{
   }]
 }];
 
+
+function Time(rental){
+  var pickupDate = new Date(rental.pickupDate);
+  var returnDate = new Date(rental.returnDate);
+  var nbDays = (returnDate - pickupDate)/(1000*60*60*24)+1;
+  //Console.log(nbDays);
+  return nbDays * cars.find(x => x.id === rental.carId).pricePerDay;
+}
+
+function distance(rental){
+  return rental.distance * cars.find(x => x.id === rental.carId).pricePerKm;
+}
+
+rentals.forEach(function(part,index){
+  this[index].price= Time(part) + distance(part);
+}, rentals);
+
+
+console.log("goran")
+
 console.log(cars);
 console.log(rentals);
 console.log(actors);
