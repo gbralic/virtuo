@@ -163,6 +163,7 @@ function Time(rental){
   var pickupDate = new Date(rental.pickupDate);
   var returnDate = new Date(rental.returnDate);
   var nbDays = (returnDate - pickupDate)/(1000*60*60*24)+1;
+
   //Console.log(nbDays);
   return nbDays * cars.find(x => x.id === rental.carId).pricePerDay;
 }
@@ -171,8 +172,29 @@ function distance(rental){
   return rental.distance * cars.find(x => x.id === rental.carId).pricePerKm;
 }
 
+function Time2(rental){
+  var pickupDate = new Date(rental.pickupDate);
+  var returnDate = new Date(rental.returnDate);
+  var nbDays = (returnDate - pickupDate)/(1000*60*60*24)+1;
+  var coeff = 1;
+  if (nbDays > 10){
+    coeff = 0.5;
+  }
+  else {
+    if (nbDays>4){
+      coeff = 0.3;
+    }
+    else {
+      if (nbDays>1){
+        coeff = 0.1;
+      }
+    }
+  }
+  return (nbDays * cars.find(x => x.id === rental.carId).pricePerDay)*coeff;
+}
+
 rentals.forEach(function(part,index){
-  this[index].price= Time(part) + distance(part);
+  this[index].price= Time2(part) + distance(part);
 }, rentals);
 
 
